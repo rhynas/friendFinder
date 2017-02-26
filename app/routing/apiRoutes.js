@@ -1,43 +1,51 @@
-// Routes
-// =============================================================
+var express = require("express");
+var friends = require("../data/friends.js");
+// var path = require("path");
 
-// Basic route that sends the user first to the AJAX Page
-app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname, "index.html"));
+var app = express.Router();
+
+app.get("/friends", function(req, res) {
+	res.json(friends);
 });
 
-app.get("/reservation", function(req, res) {
-  res.sendFile(path.join(__dirname, "make.html"));
+
+app.post("/friends", function(req, res) {
+	// Note the code here. Our "server" will respond to requests and let users know if they have a table or not.
+	// It will do this by sending out the value "true" have a table
+	  // friends.push(req.body);
+	  // res.json(true);
+	var match = compatibility(req.body);
+	// console.log(match);
+	res.json(match);
 });
 
-// Search for Specific Character (or all characters) - provides JSON
-// app.get("/api/:reservations?", function(req, res) {
-//   var chosen = req.params.reservations;
+function getSum(total, num){
+  return parseInt(total) + parseInt(num);
+}
 
-//   if (chosen) {
-//     console.log(chosen);
+function compatibility(user){
+   //Define variables
+   var bestMatch = 0; //will get the closest match in the array of friends
+   var difference = 0; //Holds the differenfence between the friend score and the user scores
+   var friendScore = 0; //Hold the score value for each friend in the array
+   var userScore = user.scores.reduce(getSum);
+   var current = friends[0].scores.reduce(getSum);
+   //Loop over the array to calculate the difference
+   //between the user score and the current list of friends scores
+   for (var i = 0 ; i < friends.length ; i++){
+      friendScore = friends[i].scores.reduce(getSum);
+      console.log(friends[i].name, 'score ', friendScore)
+      difference = Math.abs(friendScore - userScore);
+      if (difference < Math.abs(userScore - current)){
+         current = friendScore;
+         bestMatch = i;
+      }
 
-//     for (var i = 0; i < reservations.length; i++) {
-//       if (chosen === reservations[i].routeName) {
-//         res.json(reservations[i]);
-//         return;
-//       }
-//     }
+   }
+   // console.log('User Score: ' + userScore);
+   // console.log('Match: ' + bestMatch);
+   return(friends[bestMatch]);
+}
 
-//     res.json(false);
-//   }
-//   else {
-//     res.json(reservations);
-//   }
-// });
-
-// Create New Characters - takes in JSON input
-app.get("/add-reservation", function(req, res) {
-  var newReservation = req.body;
-
-  console.log(newReservation);
-
-  reservations.push(newReservation);
-
-  res.json(newReservation);
-});
+// Export routes for server.js to use.
+module.exports = app;

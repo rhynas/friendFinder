@@ -1,43 +1,26 @@
-// Routes
+// Dependencies
+// =============================================================
+var express = require("express");
+var path = require("path");
+
+var app = express.Router();
 // =============================================================
 
-// Basic route that sends the user first to the AJAX Page
+// Basic route that sends the user to the Home Page
 app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "../public/home.html"));
 });
 
-app.get("/reservation", function(req, res) {
-  res.sendFile(path.join(__dirname, "make.html"));
+//User is directed to the Survey Web Page
+app.get("/survey", function(req, res) {
+  res.sendFile(path.join(__dirname, "../public/survey.html"));
 });
 
-// Search for Specific Character (or all characters) - provides JSON
-// app.get("/api/:reservations?", function(req, res) {
-//   var chosen = req.params.reservations;
 
-//   if (chosen) {
-//     console.log(chosen);
-
-//     for (var i = 0; i < reservations.length; i++) {
-//       if (chosen === reservations[i].routeName) {
-//         res.json(reservations[i]);
-//         return;
-//       }
-//     }
-
-//     res.json(false);
-//   }
-//   else {
-//     res.json(reservations);
-//   }
-// });
-
-// Create New Characters - takes in JSON input
-app.get("/add-reservation", function(req, res) {
-  var newReservation = req.body;
-
-  console.log(newReservation);
-
-  reservations.push(newReservation);
-
-  res.json(newReservation);
+// If no route is found the user is redirected to the Home page
+app.use(function(req, res) {
+   res.sendFile(path.join(__dirname, "../public/home.html"));
 });
+
+// Export routes for server.js to use.
+module.exports = app;

@@ -166,7 +166,7 @@
 		<hr>
 	    <footer class="footer">
 	      <div class="container">
-		        <p><a href="/api/friends">API Friends List</a> | <a href="https://github.com/afhaque/friendfinder">GitHub Repo</a></p>
+		        <p><a href="/api/friends">API Friends List</a> | <a target="_blank" href="https://github.com/rhynas/friendfinder">GitHub Repo</a></p>
 	      </div>
 	    </footer>
 
@@ -211,7 +211,6 @@
 
     // Capture the form inputs 
     $("#submit").on("click", function(){
-    	console.log('I am in submit');
     	// Form validation
     	function validateForm() {
 		  var isValid = true;
@@ -237,11 +236,8 @@
 	    		photo: $("#photo").val(),
 	    		scores: [$("#q1").val(), $("#q2").val(), $("#q3").val(), $("#q4").val(), $("#q5").val(), $("#q6").val(), $("#q7").val(), $("#q8").val(), $("#q9").val(), $("#q10").val(), ]
 	    	}
-	    	console.log(userData);
-
 	    	// Grab the URL of the website
 	    	var currentURL = window.location.origin;
-	    	console.log(currentURL);
 	    	// AJAX post the data to the friends API. 
 	    	$.post(currentURL + "/api/friends", userData, function(data){
 
@@ -251,7 +247,6 @@
 	    		console.log(data.photo);
 		    	// Show the modal with the best match 
 		    	$("#resultsModal").modal('toggle');
-
 	    	});
 		}
 		else
@@ -261,7 +256,6 @@
     	
     	return false;
     });
-
 
   </script>
 

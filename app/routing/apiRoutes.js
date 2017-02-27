@@ -16,6 +16,7 @@ app.post("/friends", function(req, res) {
 	  // res.json(true);
 	var match = compatibility(req.body);
 	// console.log(match);
+	friends.push(req.body);
 	res.json(match);
 });
 
